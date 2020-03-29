@@ -15,6 +15,10 @@ public class ShipmentBean implements DeliveryInitializer {
     @EJB
     private DroneLauncher droneLauncher;
 
+    public ShipmentBean() {
+
+    }
+
     public ShipmentBean(DroneLauncher droneLauncher) {
         this.droneLauncher = droneLauncher;
     }
@@ -31,9 +35,6 @@ public class ShipmentBean implements DeliveryInitializer {
     public boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException {
         delivery.setStatus(DeliveryStatus.ONGOING);
         TimeSlot timeSlot = delivery.getDrone().getTimeSlot(delivery);
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println(delivery);
-        System.out.println(timeSlot);
         return droneLauncher.initializeDroneLaunching(delivery.getDrone(), timeSlot.getDate());
     }
 
