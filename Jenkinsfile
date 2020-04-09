@@ -1,4 +1,5 @@
-def slackMsg = ""
+def update = ""
+def gate = ""
 pipeline{
     agent any
     options {
@@ -11,7 +12,7 @@ pipeline{
     }
     environment {
         MVN_SETTING_PROVIDER = "3ec57b41-efe6-4628-a6c7-8be5f1c26d77"
-        SLACK_MSG = ""
+        COMPONENT = "projet-isa-devops-20-team-b-20-shipment-component"
     }
     stages {
         stage('snapshot version') {
@@ -24,7 +25,7 @@ pipeline{
             steps {
                 sh "mvn versions:use-latest-versions -DallowSnapshots=true -DprocessParent=false -Dincludes=fr.unice.polytech.isadevops.dronedelivery:${params.DEPENDENCY}"
                 script {
-                    slackMsg = "COMPONENT CANNOT BE UPDATED"
+                    update = "\n - Component need fix before update : ${params.DEPENDENCY}[latest snapshot]"
                 }
             }
         }
@@ -66,10 +67,44 @@ pipeline{
         }
         stage('Quality Gate') {
             steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate true
+                catchError(buildResult: "SUCCESS", stageResult: "FAILURE") {
+                    timeout(time: 1, unit: "HOURS") {
+                        waitForQualityGate true
+                    }
                 }
-                echo 'passed'
+            }
+            post{
+                success {
+                    script {
+                        gate = "\n - Quality gate was successful"
+                    }
+                }
+                failure {
+                    script {
+                        gate = "\n - Quality gate was failed"
+                    }
+                }
+            }
+        }
+        stage('Update snapshot dependencies') {
+            when {
+                allOf {
+                    not { branch 'master' }
+                    expression { params.DEPENDENCY == '' }
+                }
+            }
+            steps {
+                script {
+                    def components = ['projet-isa-devops-20-team-b-20-web-service']
+                    for (int i = 0; i < components.size(); ++i) {
+                        echo "Check dependency on ${components[i]}"
+                        build job: "${components[i]}/develop",
+                            parameters: [string(name: 'DEPENDENCY', value: "${COMPONENT}"),
+                            string(name: 'VERSION', value: 'snapshot')],
+                            propagate: false,
+                            wait: false
+                    }
+                }
             }
         }
         stage('Commit with new version') {
@@ -81,7 +116,7 @@ pipeline{
             }
             steps {
                 script {
-                    slackMsg = "COMPONENT CAN BE UPDATED"
+                    update = "\n - Component can be update : ${params.DEPENDENCY}[latest snapshot]"
                 }
             }
         }
@@ -99,7 +134,7 @@ pipeline{
             failOnError: true,
             color: 'good',
             token: env.SLACK_TOKEN,
-            message: 'Job: ' + env.JOB_NAME + ' with buildnumber ' + env.BUILD_NUMBER + ' was successful\n' + slackMsg,
+            message: 'Job: ' + env.JOB_NAME + ' with buildnumber ' + env.BUILD_NUMBER + ' was successful' + update + gat,
             baseUrl: env.SLACK_WEBHOOK)
             echo "======== pipeline executed successfully ========"
             sh 'mvn versions:commit'
