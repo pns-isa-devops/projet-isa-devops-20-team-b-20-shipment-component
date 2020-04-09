@@ -33,7 +33,11 @@ public class ShipmentTest extends AbstractShipmentTest {
     public void setUpContext() throws ExternalDroneApiException {
         DroneLauncher mocked = mock(DroneLauncher.class);
         shipment = new ShipmentBean(mocked);
-        when(mocked.initializeDroneLaunching(new Drone(), new GregorianCalendar())).thenReturn(true);
+        try {
+            when(mocked.initializeDroneLaunching(new Drone(), new GregorianCalendar(),new Delivery())).thenReturn(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

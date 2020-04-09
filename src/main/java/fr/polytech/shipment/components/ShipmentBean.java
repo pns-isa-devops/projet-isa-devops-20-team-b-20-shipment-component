@@ -35,7 +35,13 @@ public class ShipmentBean implements DeliveryInitializer {
     public boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException {
         delivery.setStatus(DeliveryStatus.ONGOING);
         TimeSlot timeSlot = delivery.getDrone().getTimeSlot(delivery);
-        return droneLauncher.initializeDroneLaunching(delivery.getDrone(), timeSlot.getDate());
+        boolean result = false;
+        try {
+             result =  droneLauncher.initializeDroneLaunching(delivery.getDrone(), timeSlot.getDate(),delivery);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }
