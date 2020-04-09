@@ -23,6 +23,9 @@ pipeline{
             }
             steps {
                 sh "mvn versions:use-latest-versions -DallowSnapshots=true -DprocessParent=false -Dincludes=fr.unice.polytech.isadevops.dronedelivery:${params.DEPENDENCY}"
+                script {
+                    slackMsg = "COMPONENT CANNOT BE UPDATED"
+                }
             }
         }
         stage("Compile") {
