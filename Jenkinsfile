@@ -134,7 +134,7 @@ pipeline{
             failOnError: true,
             color: 'good',
             token: env.SLACK_TOKEN,
-            message: 'Job: ' + env.JOB_NAME + ' with buildnumber ' + env.BUILD_NUMBER + ' was successful' + update + gat,
+            message: 'Job: ' + env.JOB_NAME + ' with buildnumber ' + env.BUILD_NUMBER + ' was successful' + update + gate,
             baseUrl: env.SLACK_WEBHOOK)
             echo "======== pipeline executed successfully ========"
             sh 'mvn versions:commit'
