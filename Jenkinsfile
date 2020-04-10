@@ -8,7 +8,7 @@ pipeline{
     }
     parameters {
         string(name: 'DEPENDENCY', defaultValue: '', description: 'dependency to update')
-        string(name: 'VERSION', defaultValue: '', description: 'version of the dependency')
+        string(name: "UPDATE_VERSION", defaultValue: '', description: 'version of the dependency')
         choice(name: 'TYPE', choices: ['none', 'snapshot', 'release'], description: 'type of version to update')
     }
     environment {
