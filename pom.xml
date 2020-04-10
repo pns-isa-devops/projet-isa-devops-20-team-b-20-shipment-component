@@ -10,16 +10,21 @@
 
     <artifactId>projet-isa-devops-20-team-b-20-shipment-component</artifactId>
 
+    <properties>
+        <versions.projet-isa-devops-20-team-b-20-drone-park-component>1.3-SNAPSHOT</versions.projet-isa-devops-20-team-b-20-drone-park-component>
+        <versions.projet-isa-devops-20-team-b-20-entities>1.1-SNAPSHOT</versions.projet-isa-devops-20-team-b-20-entities>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>fr.unice.polytech.isadevops.dronedelivery</groupId>
             <artifactId>projet-isa-devops-20-team-b-20-drone-park-component</artifactId>
-            <version>1.3-SNAPSHOT</version>
+            <version>${versions.projet-isa-devops-20-team-b-20-drone-park-component}</version>
         </dependency>
         <dependency>
             <groupId>fr.unice.polytech.isadevops.dronedelivery</groupId>
             <artifactId>projet-isa-devops-20-team-b-20-entities</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${versions.projet-isa-devops-20-team-b-20-entities}</version>
         </dependency>
     </dependencies>
 
