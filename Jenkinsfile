@@ -20,7 +20,7 @@ pipeline{
             environment {
                 CURRENT_VERSION = '''${sh(
                                     returnStdout: true,
-                                    script: "mvn help:evaluate -Dexpression=versions.${DEPENDENCY} -q -DforceStdout
+                                    script: "mvn help:evaluate -Dexpression=versions.${DEPENDENCY} -q -DforceStdout"
                                 )}'''
             }
             when {
@@ -98,7 +98,7 @@ pipeline{
             environment {
                 CURRENT_VERSION = '''${sh(
                                     returnStdout: true,
-                                    script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout"
+                                    script: "mvn help:evaluate -Dexpression=project.version -q -DforceStdout""
                                 )}'''
             }
             when {
