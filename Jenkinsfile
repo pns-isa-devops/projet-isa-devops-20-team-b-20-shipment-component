@@ -98,34 +98,6 @@ pipeline{
                         }
                     }
                 }
-                stage('Update snapshot dependencies') {
-                    environment {
-                        CURRENT_VERSION = """${sh(
-                                            returnStdout: true,
-                                            script: 'mvn help:evaluate -Dexpression=project.version -q -DforceStdout'
-                                        )}"""
-                    }
-                    when {
-                        allOf {
-                            not { branch 'master' }
-                            expression { params.DEPENDENCY == '' }
-                        }
-                    }
-                    steps {
-                        script {
-                            def components = ['']
-                            for (int i = 0; i < components.size(); ++i) {
-                                echo "Check dependency on ${components[i]}"
-                                build job: "${components[i]}/develop",
-                                    parameters: [string(name: 'DEPENDENCY', value: "${COMPONENT}"),
-                                    string(name: 'VERSION', value: "${CURRENT_VERSION}"),
-                                    string(name: 'TYPE', value: 'snapshot')],
-                                    propagate: false,
-                                    wait: false
-                            }
-                        }
-                    }
-                }
                 stage('Commit with new version') {
                     when {
                         allOf {
