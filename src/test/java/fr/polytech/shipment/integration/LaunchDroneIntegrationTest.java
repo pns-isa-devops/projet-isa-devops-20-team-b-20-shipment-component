@@ -39,10 +39,10 @@ public class LaunchDroneIntegrationTest extends AbstractShipmentTest {
     @Before
     public void setup() {
         drone = new Drone();
-        drone.setDroneId(1);
+        drone.setDroneId("1");
         drone.setDroneStatus(DroneStatus.AVAILABLE);
         delivery = new Delivery();
-        delivery.setDeliveryNumber("d1");
+        delivery.setDeliveryId("d1");
         delivery.setDrone(drone);
         delivery.setStatus(DeliveryStatus.NOT_DELIVERED);
         TimeSlot ts = new TimeSlot();
