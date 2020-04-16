@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.openejb.api.LocalClient;
+import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,10 +21,12 @@ import fr.polytech.entities.DeliveryStatus;
 import fr.polytech.entities.Drone;
 import fr.polytech.entities.TimeSlot;
 import fr.polytech.shipment.components.ShipmentBean;
+import org.junit.runner.RunWith;
 
 /**
  * DronePark
  */
+@RunWith(Arquillian.class)
 @LocalClient
 public class ShipmentTest extends AbstractShipmentTest {
 
@@ -43,7 +46,7 @@ public class ShipmentTest extends AbstractShipmentTest {
     @Test
     public void initializeDelivery() throws ExternalDroneApiException {
         Delivery delivery = new Delivery();
-        delivery.setDrone(new Drone());
+        delivery.setDrone(new Drone("777"));
         Set<TimeSlot> timeSlots = new HashSet<>();
         TimeSlot timeSlot = new TimeSlot();
         timeSlot.setDate(new GregorianCalendar());
