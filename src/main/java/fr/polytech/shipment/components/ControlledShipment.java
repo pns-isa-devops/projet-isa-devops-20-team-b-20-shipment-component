@@ -1,4 +1,11 @@
 package fr.polytech.shipment.components;
 
-public interface ControlledShipment {
+import javax.ejb.Local;
+
+import fr.polytech.dronepark.components.DroneLauncher;
+
+@Local
+public interface ControlledShipment extends DeliveryInitializer {
+
+    void useDroneLauncherReference(DroneLauncher droneLauncher);
 }

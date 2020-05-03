@@ -4,6 +4,8 @@ import javax.ejb.Local;
 
 import fr.polytech.dronepark.exception.ExternalDroneApiException;
 import fr.polytech.entities.Delivery;
+import fr.polytech.shipment.exception.NoDroneAttachOnDeliveryException;
+import fr.polytech.shipment.exception.NoTimeSlotAttachOnDeliveryException;
 
 @Local
 public interface DeliveryInitializer {
@@ -15,6 +17,9 @@ public interface DeliveryInitializer {
      * @param delivery
      * @return
      * @throws ExternalDroneApiException
+     * @throws NoDroneAttachOnDeliveryException
+     * @throws NoTimeSlotAttachOnDeliveryException
      */
-    boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException;
+    boolean initializeDelivery(Delivery delivery)
+            throws ExternalDroneApiException, NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException;
 }

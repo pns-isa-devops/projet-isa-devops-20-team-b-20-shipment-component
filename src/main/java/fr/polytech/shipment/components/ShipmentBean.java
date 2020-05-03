@@ -4,22 +4,28 @@ import fr.polytech.dronepark.components.DroneLauncher;
 import fr.polytech.dronepark.exception.ExternalDroneApiException;
 import fr.polytech.entities.Delivery;
 import fr.polytech.entities.DeliveryStatus;
+import fr.polytech.entities.Drone;
 import fr.polytech.entities.TimeSlot;
+import fr.polytech.shipment.exception.NoDroneAttachOnDeliveryException;
+import fr.polytech.shipment.exception.NoTimeSlotAttachOnDeliveryException;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Stateless
-public class ShipmentBean implements DeliveryInitializer {
+public class ShipmentBean implements DeliveryInitializer, ControlledShipment {
 
     @EJB
     private DroneLauncher droneLauncher;
 
-    public ShipmentBean(DroneLauncher droneLauncher) {
-        this.droneLauncher = droneLauncher;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public ShipmentBean() {
+    @Override
+    public void useDroneLauncherReference(DroneLauncher droneLauncher) {
+        this.droneLauncher = droneLauncher;
     }
 
     /**
@@ -29,11 +35,23 @@ public class ShipmentBean implements DeliveryInitializer {
      * @param delivery
      * @return
      * @throws ExternalDroneApiException
+     * @throws NoDroneAttachOnDeliveryException
+     * @throws NoTimeSlotAttachOnDeliveryException
      */
     @Override
-    public boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException {
+    public boolean initializeDelivery(Delivery delivery)
+            throws ExternalDroneApiException, NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException {
+        delivery = entityManager.merge(delivery);
+        Drone drone = delivery.getDrone();
+        drone = entityManager.merge(drone);
+        if (drone == null) {
+            throw new NoDroneAttachOnDeliveryException(delivery.getDeliveryId());
+        }
+        TimeSlot timeSlot = drone.getTimeSlot(delivery);
+        if (timeSlot == null) {
+            throw new NoTimeSlotAttachOnDeliveryException(drone.getDroneId());
+        }
         delivery.setStatus(DeliveryStatus.ONGOING);
-        TimeSlot timeSlot = delivery.getDrone().getTimeSlot(delivery);
         boolean result = droneLauncher.initializeDroneLaunching(delivery.getDrone(), timeSlot.getDate(), delivery);
         return result;
     }

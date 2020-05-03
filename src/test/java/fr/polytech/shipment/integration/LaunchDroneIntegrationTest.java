@@ -23,6 +23,8 @@ import fr.polytech.entities.DroneStatus;
 import fr.polytech.entities.TimeSlot;
 import fr.polytech.entities.TimeState;
 import fr.polytech.shipment.components.DeliveryInitializer;
+import fr.polytech.shipment.exception.NoDroneAttachOnDeliveryException;
+import fr.polytech.shipment.exception.NoTimeSlotAttachOnDeliveryException;
 
 /**
  * LaunchDroneIntegrationTest
@@ -55,7 +57,8 @@ public class LaunchDroneIntegrationTest extends AbstractShipmentTest {
     }
 
     @Test
-    public void launchDroneTest() throws ExternalDroneApiException {
+    public void launchDroneTest()
+            throws ExternalDroneApiException, NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException {
         // launch the drone (go on delivery)
         assertTrue(deliveryInitializer.initializeDelivery(delivery));
         // cannot launch the drone again, already on delivery
