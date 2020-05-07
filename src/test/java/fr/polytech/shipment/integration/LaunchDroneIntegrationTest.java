@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import arquillian.AbstractShipmentTest;
+import fr.polytech.dronepark.exception.DroneNotAvailableException;
 import fr.polytech.dronepark.exception.ExternalDroneApiException;
 import fr.polytech.entities.Delivery;
 import fr.polytech.entities.DeliveryStatus;
@@ -57,8 +58,8 @@ public class LaunchDroneIntegrationTest extends AbstractShipmentTest {
     }
 
     @Test
-    public void launchDroneTest()
-            throws ExternalDroneApiException, NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException {
+    public void launchDroneTest() throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
+            NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException {
         // launch the drone (go on delivery)
         assertTrue(deliveryInitializer.initializeDelivery(delivery));
         // cannot launch the drone again, already on delivery

@@ -2,6 +2,7 @@ package fr.polytech.shipment.components;
 
 import javax.ejb.Local;
 
+import fr.polytech.dronepark.exception.DroneNotAvailableException;
 import fr.polytech.dronepark.exception.ExternalDroneApiException;
 import fr.polytech.entities.Delivery;
 import fr.polytech.shipment.exception.NoDroneAttachOnDeliveryException;
@@ -19,7 +20,8 @@ public interface DeliveryInitializer {
      * @throws ExternalDroneApiException
      * @throws NoDroneAttachOnDeliveryException
      * @throws NoTimeSlotAttachOnDeliveryException
+     * @throws DroneNotAvailableException
      */
-    boolean initializeDelivery(Delivery delivery)
-            throws ExternalDroneApiException, NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException;
+    boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
+            NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException;
 }

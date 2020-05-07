@@ -1,6 +1,7 @@
 package fr.polytech.shipment.components;
 
 import fr.polytech.dronepark.components.DroneLauncher;
+import fr.polytech.dronepark.exception.DroneNotAvailableException;
 import fr.polytech.dronepark.exception.ExternalDroneApiException;
 import fr.polytech.entities.Delivery;
 import fr.polytech.entities.DeliveryStatus;
@@ -37,10 +38,11 @@ public class ShipmentBean implements DeliveryInitializer, ControlledShipment {
      * @throws ExternalDroneApiException
      * @throws NoDroneAttachOnDeliveryException
      * @throws NoTimeSlotAttachOnDeliveryException
+     * @throws DroneNotAvailableException
      */
     @Override
-    public boolean initializeDelivery(Delivery delivery)
-            throws ExternalDroneApiException, NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException {
+    public boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException,
+            NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException {
         delivery = entityManager.merge(delivery);
         Drone drone = delivery.getDrone();
         drone = entityManager.merge(drone);
@@ -52,7 +54,7 @@ public class ShipmentBean implements DeliveryInitializer, ControlledShipment {
             throw new NoTimeSlotAttachOnDeliveryException(drone.getDroneId());
         }
         delivery.setStatus(DeliveryStatus.ONGOING);
-        boolean result = droneLauncher.initializeDroneLaunching(delivery.getDrone(), timeSlot.getDate(), delivery);
+        boolean result = droneLauncher.initializeDroneLaunching(drone, timeSlot.getDate(), delivery);
         return result;
     }
 
