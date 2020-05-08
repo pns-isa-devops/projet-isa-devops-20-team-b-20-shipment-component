@@ -3,13 +3,14 @@ package fr.polytech.shipment.integration;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.ejb.EJB;
 
 import org.jboss.arquillian.junit.Arquillian;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,7 +53,7 @@ public class LaunchDroneIntegrationTest extends AbstractShipmentTest {
         ts.setDelivery(delivery);
         ts.setState(TimeState.DELIVERY);
         ts.setDate(new GregorianCalendar());
-        Set<TimeSlot> timeslots = new HashSet<>();
+        List<TimeSlot> timeslots = new ArrayList<>();
         timeslots.add(ts);
         drone.setTimeSlots(timeslots);
     }
