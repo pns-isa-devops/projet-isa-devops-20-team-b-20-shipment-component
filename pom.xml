@@ -12,7 +12,7 @@
 
     <properties>
         <versions.projet-isa-devops-20-team-b-20-drone-park-component>2.0.5-SNAPSHOT</versions.projet-isa-devops-20-team-b-20-drone-park-component>
-        <versions.projet-isa-devops-20-team-b-20-entities>2.0.5-SNAPSHOT</versions.projet-isa-devops-20-team-b-20-entities>
+        <versions.projet-isa-devops-20-team-b-20-entities>2.0.6-SNAPSHOT</versions.projet-isa-devops-20-team-b-20-entities>
     </properties>
 
     <dependencies>
