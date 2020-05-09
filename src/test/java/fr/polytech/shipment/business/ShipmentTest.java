@@ -61,6 +61,7 @@ public class ShipmentTest extends AbstractShipmentTest {
         this.delivery.setParcel(parcel);
         this.delivery.setDrone(drone);
         entityManager.persist(delivery);
+        this.drone.setCurrentDelivery(delivery);
         this.timeslot = new TimeSlot();
         this.timeslot.setDate(new GregorianCalendar());
         this.timeslot.setDelivery(delivery);

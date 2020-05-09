@@ -43,20 +43,25 @@ public class ShipmentBean implements DeliveryInitializer, ControlledShipment {
     @Override
     public Delivery initializeDelivery(Delivery delivery) throws ExternalDroneApiException,
             NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException {
-        delivery = entityManager.merge(delivery);
         Drone drone = delivery.getDrone();
+
         drone = entityManager.merge(drone);
         if (drone == null) {
             throw new NoDroneAttachOnDeliveryException(delivery.getDeliveryId());
         }
+
         TimeSlot timeSlot = drone.getTimeSlot(delivery);
+
         if (timeSlot == null) {
             throw new NoTimeSlotAttachOnDeliveryException(drone.getDroneId());
         }
+
         droneLauncher.initializeDroneLaunching(drone, timeSlot.getDate(), delivery);
         delivery.setStatus(DeliveryStatus.ONGOING);
-        entityManager.detach(drone);
-        return delivery;
+
+        entityManager.flush();
+        entityManager.clear();
+        return entityManager.find(Delivery.class, delivery.getId());
     }
 
 }
