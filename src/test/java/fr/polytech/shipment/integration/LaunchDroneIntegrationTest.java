@@ -59,11 +59,18 @@ public class LaunchDroneIntegrationTest extends AbstractShipmentTest {
     }
 
     @Test
-    public void launchDroneTest() throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
+    public void launchDroneOneTimeTest() throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
             NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException {
         // launch the drone (go on delivery)
-        assertTrue(deliveryInitializer.initializeDelivery(delivery));
+        deliveryInitializer.initializeDelivery(delivery);
+    }
+
+    @Test(expected = DroneNotAvailableException.class)
+    public void launchDroneTwoTimeTest() throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
+            NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException {
+        // launch the drone (go on delivery)
+        deliveryInitializer.initializeDelivery(delivery);
         // cannot launch the drone again, already on delivery
-        assertFalse(deliveryInitializer.initializeDelivery(delivery));
+        deliveryInitializer.initializeDelivery(delivery);
     }
 }

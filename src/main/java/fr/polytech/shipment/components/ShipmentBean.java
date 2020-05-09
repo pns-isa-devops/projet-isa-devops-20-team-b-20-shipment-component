@@ -41,7 +41,7 @@ public class ShipmentBean implements DeliveryInitializer, ControlledShipment {
      * @throws DroneNotAvailableException
      */
     @Override
-    public boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException,
+    public Delivery initializeDelivery(Delivery delivery) throws ExternalDroneApiException,
             NoDroneAttachOnDeliveryException, NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException {
         delivery = entityManager.merge(delivery);
         Drone drone = delivery.getDrone();
@@ -53,9 +53,10 @@ public class ShipmentBean implements DeliveryInitializer, ControlledShipment {
         if (timeSlot == null) {
             throw new NoTimeSlotAttachOnDeliveryException(drone.getDroneId());
         }
+        droneLauncher.initializeDroneLaunching(drone, timeSlot.getDate(), delivery);
         delivery.setStatus(DeliveryStatus.ONGOING);
-        boolean result = droneLauncher.initializeDroneLaunching(drone, timeSlot.getDate(), delivery);
-        return result;
+        entityManager.detach(drone);
+        return delivery;
     }
 
 }

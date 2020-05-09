@@ -22,6 +22,6 @@ public interface DeliveryInitializer {
      * @throws NoTimeSlotAttachOnDeliveryException
      * @throws DroneNotAvailableException
      */
-    boolean initializeDelivery(Delivery delivery) throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
+    Delivery initializeDelivery(Delivery delivery) throws ExternalDroneApiException, NoDroneAttachOnDeliveryException,
             NoTimeSlotAttachOnDeliveryException, DroneNotAvailableException;
 }

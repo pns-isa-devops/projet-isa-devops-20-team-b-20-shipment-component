@@ -2,8 +2,8 @@ package fr.polytech.shipment.business;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import java.util.GregorianCalendar;
 
@@ -49,7 +49,7 @@ public class ShipmentTest extends AbstractShipmentTest {
     @Before
     public void setUpContext() throws Exception {
         DroneLauncher mocked = mock(DroneLauncher.class);
-        when(mocked.initializeDroneLaunching(drone, new GregorianCalendar(), delivery)).thenReturn(true);
+        doNothing().when(mocked).initializeDroneLaunching(drone, new GregorianCalendar(), delivery);
         this.shipment.useDroneLauncherReference(mocked);
 
         parcel = new Parcel("123456789A", "az", "az", "az");
